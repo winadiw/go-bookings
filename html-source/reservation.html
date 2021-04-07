@@ -20,6 +20,11 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.1.4/dist/css/datepicker-bs4.min.css"
     />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://unpkg.com/notie/dist/notie.min.css"
+    />
     <style>
       .my-footer {
         height: 5em;
@@ -32,6 +37,10 @@
 
       .redText {
         color: red;
+      }
+
+      .notie-container {
+        box-shadow: none;
       }
     </style>
   </head>
@@ -170,6 +179,7 @@
       crossorigin="anonymous"
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.1.2/dist/js/datepicker-full.min.js"></script>
+    <script src="https://unpkg.com/notie"></script>
     <script>
       console.log("I am printing from javascript");
 
@@ -204,6 +214,8 @@
         .addEventListener("click", function () {
           let myEl = document.getElementById("myParagraph");
 
+          notify("test", "success");
+
           if (myEl.classList.contains("redText")) {
             myEl.classList.remove("redText");
           } else {
@@ -216,6 +228,13 @@
       const rangePicker = new DateRangePicker(elem, {
         format: "yyyy-mm-dd",
       });
+
+      function notify(msg, type = "success") {
+        notie.alert({
+          type, // optional, default = 4, enum: [1, 2, 3, 4, 5, 'success', 'warning', 'error', 'info', 'neutral']
+          text: msg,
+        });
+      }
     </script>
   </body>
 </html>
