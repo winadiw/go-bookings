@@ -180,6 +180,7 @@
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/vanillajs-datepicker@1.1.2/dist/js/datepicker-full.min.js"></script>
     <script src="https://unpkg.com/notie"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
       console.log("I am printing from javascript");
 
@@ -214,7 +215,7 @@
         .addEventListener("click", function () {
           let myEl = document.getElementById("myParagraph");
 
-          notify("test", "success");
+          notifyModal("Test", "test", "success", "Yes");
 
           if (myEl.classList.contains("redText")) {
             myEl.classList.remove("redText");
@@ -233,6 +234,15 @@
         notie.alert({
           type, // optional, default = 4, enum: [1, 2, 3, 4, 5, 'success', 'warning', 'error', 'info', 'neutral']
           text: msg,
+        });
+      }
+
+      function notifyModal(title, text, icon, confirmButtonText) {
+        Swal.fire({
+          icon,
+          title,
+          html: text,
+          confirmButtonText,
         });
       }
     </script>
