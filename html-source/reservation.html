@@ -35,12 +35,12 @@
         font-size: 80%;
       }
 
-      .redText {
-        color: red;
-      }
-
       .notie-container {
         box-shadow: none;
+      }
+
+      .datepicker {
+        z-index: 2000;
       }
     </style>
   </head>
@@ -182,7 +182,7 @@
     <script src="https://unpkg.com/notie"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
     <script>
-      console.log("I am printing from javascript");
+      let attention = Prompt();
 
       (function () {
         "use strict";
@@ -213,15 +213,26 @@
       document
         .getElementById("colorButton")
         .addEventListener("click", function () {
-          let myEl = document.getElementById("myParagraph");
+          let html = `
+          <form id="check-availability-form" action="" method="post" novalidate class="needs-validation">
+          <div class="form-row">
+            <div class="col">
+              <div class="form-row" id="reservation-dates-modal">
+                <div class="col">
+                  <input disabled required class="form-control"  type="text" name="start" id="start" placeholder="Arrival" />
+                </div>
+                <div class="col">
+                  <input disabled required class="form-control"  type="text" name="end" id="end" placeholder="Departure" />
+                </div> 
+              </div>
+            </div>  
+          </form>
+          `;
 
-          notifyModal("Test", "test", "success", "Yes");
-
-          if (myEl.classList.contains("redText")) {
-            myEl.classList.remove("redText");
-          } else {
-            myEl.classList.add("redText");
-          }
+          attention.custom({
+            msg: html,
+            title: "Choose your dates",
+          });
         });
 
       // Use vanillajs-datepicker for better datepicker
@@ -244,6 +255,88 @@
           html: text,
           confirmButtonText,
         });
+      }
+
+      function Prompt() {
+        let toast = function (c) {
+          const { msg = "", icon = "success", position = "top-end" } = c;
+          const Toast = Swal.mixin({
+            toast: true,
+            position,
+            showConfirmButton: false,
+            icon,
+            title: msg,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+
+          Toast.fire();
+        };
+
+        let success = function (c) {
+          const { title = "Success", msg = "", footer = "" } = c;
+
+          Swal.fire({
+            icon: "success",
+            title,
+            text: msg,
+            footer,
+          });
+        };
+
+        let error = function (c) {
+          const { title = "Error", msg = "", footer = "" } = c;
+
+          Swal.fire({
+            icon: "error",
+            title,
+            text: msg,
+            footer,
+          });
+        };
+
+        async function custom(c) {
+          const { msg = "", title = "" } = c;
+          const { value: formValues } = await Swal.fire({
+            title,
+            html: msg,
+            backdrop: false,
+            focusConfirm: false,
+            showCancelButton: true,
+            willOpen: () => {
+              const elem = document.getElementById("reservation-dates-modal");
+              const rangePicker = new DateRangePicker(elem, {
+                format: "yyyy-mm-dd",
+                showOnFocus: true,
+              });
+            },
+            didOpen: () => {
+              document.getElementById("start").removeAttribute("disabled");
+              document.getElementById("end").removeAttribute("disabled");
+            },
+            preConfirm: () => {
+              return [
+                document.getElementById("start").value,
+                document.getElementById("end").value,
+              ];
+            },
+          });
+
+          if (formValues) {
+            Swal.fire(JSON.stringify(formValues));
+          }
+        }
+
+        return {
+          toast,
+          success,
+          error,
+          custom,
+        };
       }
     </script>
   </body>
