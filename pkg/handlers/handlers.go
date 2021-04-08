@@ -1,6 +1,8 @@
 package handlers
 
 import (
+	"encoding/json"
+	"log"
 	"net/http"
 
 	"github.com/winadiw/go-bookings/pkg/config"
@@ -66,12 +68,33 @@ func (m *Repository) Availability(rw http.ResponseWriter, r *http.Request) {
 	render.RenderTemplate(rw, r, "search-availability.page.tmpl", &models.TemplateData{})
 }
 
-// Availability is the search page handler
+// PostAvailability is the search page handler
 func (m *Repository) PostAvailability(rw http.ResponseWriter, r *http.Request) {
 	start := r.Form.Get("start")
 	end := r.Form.Get("end")
 
 	rw.Write([]byte(start + end))
+}
+
+type jsonResponse struct {
+	OK      bool   `json:"ok"`
+	Message string `json:"message"`
+}
+
+// AvailabilityJSON handles request for availability and send JSON response
+func (m *Repository) AvailabilityJSON(rw http.ResponseWriter, r *http.Request) {
+	resp := jsonResponse{
+		OK:      true,
+		Message: "Available!",
+	}
+
+	out, err := json.MarshalIndent(resp, "", "    ")
+
+	if err != nil {
+		log.Fatal("err")
+	}
+	rw.Header().Set("Content-Type", "application/json")
+	rw.Write(out)
 }
 
 // Contact is the contact page handler
