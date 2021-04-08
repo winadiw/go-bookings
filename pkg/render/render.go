@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"path/filepath"
 
+	"github.com/justinas/nosurf"
 	"github.com/winadiw/go-bookings/pkg/config"
 	"github.com/winadiw/go-bookings/pkg/models"
 )
@@ -23,11 +24,13 @@ func NewTemplates(a *config.AppConfig) {
 
 // AddDefaultData sets the config for default data
 // pointers used to modify data here
-func AddDefaultData(td *models.TemplateData) *models.TemplateData {
+func AddDefaultData(td *models.TemplateData, r *http.Request) *models.TemplateData {
+	td.CSRFToken = nosurf.Token(r)
+
 	return td
 }
 
-func RenderTemplate(rw http.ResponseWriter, tmpl string, td *models.TemplateData) {
+func RenderTemplate(rw http.ResponseWriter, r *http.Request, tmpl string, td *models.TemplateData) {
 
 	// Get the template cache from the app config
 	var tc map[string]*template.Template
@@ -49,7 +52,7 @@ func RenderTemplate(rw http.ResponseWriter, tmpl string, td *models.TemplateData
 	buff := new(bytes.Buffer)
 
 	// Execute AddDefaultData if needed
-	td = AddDefaultData(td)
+	td = AddDefaultData(td, r)
 
 	// Execute buffer with given data
 	_ = t.Execute(buff, td)
