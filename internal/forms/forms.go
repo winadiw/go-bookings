@@ -5,6 +5,8 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+
+	"github.com/asaskevich/govalidator"
 )
 
 // Form creates a custom form struct, embeds a url.Values object
@@ -50,4 +52,11 @@ func (f *Form) MinLength(field string, length int, r *http.Request) bool {
 	}
 
 	return true
+}
+
+func (f *Form) IsEmail(field string) {
+	x := f.Get(field)
+	if !govalidator.IsEmail(x) {
+		f.Errors.Add(field, "Invalid email address")
+	}
 }
