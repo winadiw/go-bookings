@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/winadiw/go-bookings/internal/config"
+	"github.com/winadiw/go-bookings/internal/forms"
 	"github.com/winadiw/go-bookings/internal/models"
 	"github.com/winadiw/go-bookings/internal/render"
 )
@@ -104,5 +105,12 @@ func (m *Repository) Contact(rw http.ResponseWriter, r *http.Request) {
 
 // MakeReservation is the make reservation page handler
 func (m *Repository) MakeReservation(rw http.ResponseWriter, r *http.Request) {
-	render.RenderTemplate(rw, r, "make-reservation.page.tmpl", &models.TemplateData{})
+	render.RenderTemplate(rw, r, "make-reservation.page.tmpl", &models.TemplateData{
+		Form: forms.New(nil),
+	})
+}
+
+// PostReservation handles the posting of a reservation form
+func (m *Repository) PostReservation(rw http.ResponseWriter, r *http.Request) {
+
 }
