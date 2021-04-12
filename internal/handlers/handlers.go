@@ -147,4 +147,25 @@ func (m *Repository) PostReservation(rw http.ResponseWriter, r *http.Request) {
 		})
 		return
 	}
+
+	m.App.Session.Put(r.Context(), "reservation", reservation)
+
+	http.Redirect(rw, r, "/reservation-summary", http.StatusSeeOther)
+}
+
+func (m *Repository) ReservationSummary(rw http.ResponseWriter, r *http.Request) {
+	reservation, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
+
+	if !ok {
+		log.Fatal("Cannot get item from session")
+		return
+	}
+
+	data := make(map[string]interface{})
+
+	data["reservation"] = reservation
+
+	render.RenderTemplate(rw, r, "reservation-summary.page.tmpl", &models.TemplateData{
+		Data: data,
+	})
 }
