@@ -9,8 +9,8 @@ import (
 	"path/filepath"
 
 	"github.com/justinas/nosurf"
-	"github.com/winadiw/go-bookings/pkg/config"
-	"github.com/winadiw/go-bookings/pkg/models"
+	"github.com/winadiw/go-bookings/internal/config"
+	"github.com/winadiw/go-bookings/internal/models"
 )
 
 var functions = template.FuncMap{}

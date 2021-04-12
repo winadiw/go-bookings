@@ -5,9 +5,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/winadiw/go-bookings/pkg/config"
-	"github.com/winadiw/go-bookings/pkg/models"
-	"github.com/winadiw/go-bookings/pkg/render"
+	"github.com/winadiw/go-bookings/internal/config"
+	"github.com/winadiw/go-bookings/internal/models"
+	"github.com/winadiw/go-bookings/internal/render"
 )
 
 // Repo the repository used by the handlers

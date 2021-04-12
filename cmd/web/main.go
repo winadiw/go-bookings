@@ -7,9 +7,9 @@ import (
 	"time"
 
 	"github.com/alexedwards/scs/v2"
-	"github.com/winadiw/go-bookings/pkg/config"
-	"github.com/winadiw/go-bookings/pkg/handlers"
-	"github.com/winadiw/go-bookings/pkg/render"
+	"github.com/winadiw/go-bookings/internal/config"
+	"github.com/winadiw/go-bookings/internal/handlers"
+	"github.com/winadiw/go-bookings/internal/render"
 )
 
 const portNumber = "localhost:8080"
