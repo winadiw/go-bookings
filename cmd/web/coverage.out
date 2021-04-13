@@ -1,0 +1,12 @@
+mode: set
+github.com/winadiw/go-bookings/cmd/web/main.go:23.13,26.16 2 0
+github.com/winadiw/go-bookings/cmd/web/main.go:30.2,39.16 4 0
+github.com/winadiw/go-bookings/cmd/web/main.go:26.16,28.3 1 0
+github.com/winadiw/go-bookings/cmd/web/main.go:42.18,60.16 10 1
+github.com/winadiw/go-bookings/cmd/web/main.go:65.2,73.12 6 1
+github.com/winadiw/go-bookings/cmd/web/main.go:60.16,63.3 2 0
+github.com/winadiw/go-bookings/cmd/web/middleware.go:17.45,28.2 3 1
+github.com/winadiw/go-bookings/cmd/web/middleware.go:31.50,33.2 1 1
+github.com/winadiw/go-bookings/cmd/web/routes.go:12.49,21.31 6 1
+github.com/winadiw/go-bookings/cmd/web/routes.go:26.2,44.12 13 1
+github.com/winadiw/go-bookings/cmd/web/routes.go:21.31,24.3 1 1
