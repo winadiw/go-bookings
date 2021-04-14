@@ -2,11 +2,11 @@ package handlers
 
 import (
 	"encoding/json"
-	"log"
 	"net/http"
 
 	"github.com/winadiw/go-bookings/internal/config"
 	"github.com/winadiw/go-bookings/internal/forms"
+	"github.com/winadiw/go-bookings/internal/helpers"
 	"github.com/winadiw/go-bookings/internal/models"
 	"github.com/winadiw/go-bookings/internal/render"
 )
@@ -32,26 +32,12 @@ func NewHandlers(r *Repository) {
 
 // Home is the home page handler
 func (m *Repository) Home(rw http.ResponseWriter, r *http.Request) {
-	remoteIP := r.RemoteAddr
-	m.App.Session.Put(r.Context(), "remote_ip", remoteIP)
-
 	render.RenderTemplate(rw, r, "home.page.tmpl", &models.TemplateData{})
 }
 
 // About is the about page handler
 func (m *Repository) About(rw http.ResponseWriter, r *http.Request) {
-
-	// perform some logic
-	stringMap := make(map[string]string)
-	stringMap["test"] = "Hello, again"
-
-	remoteIP := m.App.Session.GetString(r.Context(), "remote_ip")
-	stringMap["remote_ip"] = remoteIP
-
-	// send the data to the template
-	render.RenderTemplate(rw, r, "about.page.tmpl", &models.TemplateData{
-		StringMap: stringMap,
-	})
+	render.RenderTemplate(rw, r, "about.page.tmpl", &models.TemplateData{})
 }
 
 // Generals is the generals page handler
@@ -92,7 +78,8 @@ func (m *Repository) AvailabilityJSON(rw http.ResponseWriter, r *http.Request) {
 	out, err := json.MarshalIndent(resp, "", "    ")
 
 	if err != nil {
-		log.Fatal("err")
+		helpers.ServerError(rw, err)
+		return
 	}
 	rw.Header().Set("Content-Type", "application/json")
 	rw.Write(out)
@@ -120,7 +107,7 @@ func (m *Repository) PostReservation(rw http.ResponseWriter, r *http.Request) {
 	err := r.ParseForm()
 
 	if err != nil {
-		log.Fatal(err)
+		helpers.ServerError(rw, err)
 		return
 	}
 
@@ -157,6 +144,7 @@ func (m *Repository) ReservationSummary(rw http.ResponseWriter, r *http.Request)
 	reservation, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
 
 	if !ok {
+		m.App.ErrorLog.Println("Can't get reservation from session")
 		m.App.Session.Put(r.Context(), "error", "Can't get reservation from session")
 		http.Redirect(rw, r, "/", http.StatusTemporaryRedirect)
 		return
