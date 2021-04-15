@@ -15,3 +15,16 @@ or from root
 
 ## To test the coverage  
 `go test -coverprofile=coverage.out && go tool cover -html=coverage.out`
+
+
+## Database
+Using Soda https://gobuffalo.io/en/docs/db/getting-started/
+
+### migration
+make sure to copy `database.yml.example`
+
+new migration  
+`soda g fizz CreateUserTable`  
+
+run migration  
+`soda migrate` 

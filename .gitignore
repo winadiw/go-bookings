@@ -1,5 +1,5 @@
 .idea
-.DS_Store
 coverage.out
 bookings
 database.yml
+.DS_Store
