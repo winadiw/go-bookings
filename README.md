@@ -1,5 +1,5 @@
 # Golang Bookings 
-## based on Udemy course
+### based on Udemy course
 
 This is the repository for my bookings and reservations project
 
@@ -18,12 +18,12 @@ or from root
 
 
 ## Database
-Using Soda https://gobuffalo.io/en/docs/db/getting-started/
+Using Soda for migrations [https://gobuffalo.io/en/docs/db/getting-started/]
 
 ### migration
-make sure to copy `database.yml.example`
+make sure to copy `database.yml.example` to `database.yml`
 
-new migration  
+new migration example
 `soda g fizz CreateUserTable`  
 
 run migration  
