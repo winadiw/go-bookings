@@ -3,3 +3,4 @@ coverage.out
 bookings
 database.yml
 .DS_Store
+migrations/schema.sql
