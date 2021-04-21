@@ -6,6 +6,7 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/go-chi/chi"
 	"github.com/winadiw/go-bookings/internal/config"
 	"github.com/winadiw/go-bookings/internal/driver"
 	"github.com/winadiw/go-bookings/internal/forms"
@@ -255,4 +256,26 @@ func (m *Repository) ReservationSummary(rw http.ResponseWriter, r *http.Request)
 	render.Template(rw, r, "reservation-summary.page.tmpl", &models.TemplateData{
 		Data: data,
 	})
+}
+
+func (m *Repository) ChooseRoom(rw http.ResponseWriter, r *http.Request) {
+	roomID, err := strconv.Atoi(chi.URLParam(r, "id"))
+
+	if err != nil {
+		helpers.ServerError(rw, err)
+		return
+	}
+
+	res, ok := m.App.Session.Get(r.Context(), "reservation").(models.Reservation)
+
+	if !ok {
+		helpers.ServerError(rw, err)
+		return
+	}
+
+	res.RoomID = roomID
+
+	m.App.Session.Put(r.Context(), "reservation", res)
+
+	http.Redirect(rw, r, "/make-reservation", http.StatusSeeOther)
 }
