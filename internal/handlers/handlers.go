@@ -5,10 +5,13 @@ import (
 	"net/http"
 
 	"github.com/winadiw/go-bookings/internal/config"
+	"github.com/winadiw/go-bookings/internal/driver"
 	"github.com/winadiw/go-bookings/internal/forms"
 	"github.com/winadiw/go-bookings/internal/helpers"
 	"github.com/winadiw/go-bookings/internal/models"
 	"github.com/winadiw/go-bookings/internal/render"
+	"github.com/winadiw/go-bookings/internal/repository"
+	"github.com/winadiw/go-bookings/internal/repository/dbrepo"
 )
 
 // Repo the repository used by the handlers
@@ -16,12 +19,14 @@ var Repo *Repository
 
 type Repository struct {
 	App *config.AppConfig
+	DB  repository.DatabaseRepo
 }
 
 // NewRepo creates a new repository
-func NewRepo(a *config.AppConfig) *Repository {
+func NewRepo(a *config.AppConfig, db *driver.DB) *Repository {
 	return &Repository{
 		App: a,
+		DB:  dbrepo.NewPostgresRepo(db.SQL, a),
 	}
 }
 
